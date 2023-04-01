@@ -4,6 +4,7 @@ import 'package:app_agence/view/widget/drawer_widget.dart';
 import 'package:app_agence/viewmodel/product_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -62,7 +63,10 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                     ),
-                    onTap: () {
+                    onTap: () async {
+                      Position position = await _determinePosition();
+
+                      if (!mounted) return;
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -70,6 +74,8 @@ class _HomeState extends State<Home> {
                             title: items[index].name.toString(),
                             description: items[index].price.toString(),
                             image: items[index].imageURL.toString(),
+                            latitude: position.latitude,
+                            longitude: position.longitude,
                           ),
                         ),
                       );
@@ -94,5 +100,34 @@ class _HomeState extends State<Home> {
 
     //map json and initialize using DataModel
     return list.map((e) => ProductDataModel.fromJson(e)).toList();
+  }
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled');
+    }
+
+    permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permission denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Location permission are permanently denied');
+    }
+
+    Position position = await Geolocator.getCurrentPosition();
+
+    return position;
   }
 }
