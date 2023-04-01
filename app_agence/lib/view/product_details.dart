@@ -1,11 +1,22 @@
+import 'dart:async';
 import 'package:app_agence/view/widget/alert_dialog_buy_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ProductDetails extends StatefulWidget {
   final String? title;
   final String? description;
   final String? image;
-  const ProductDetails({Key? key, this.title, this.description, this.image})
+  final double? latitude;
+  final double? longitude;
+
+  const ProductDetails(
+      {Key? key,
+      this.title,
+      this.description,
+      this.latitude,
+      this.longitude,
+      this.image})
       : super(key: key);
 
   @override
@@ -13,8 +24,19 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+
+  Set<Marker> markers = {};
+
   @override
   Widget build(BuildContext context) {
+    CameraPosition kGooglePlex = CameraPosition(
+      target: LatLng(widget.latitude ?? 37.42796133580664,
+          widget.longitude ?? -122.085749655962),
+      zoom: 14.4746,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detalhes do Produto'),
@@ -25,9 +47,21 @@ class _ProductDetailsState extends State<ProductDetails> {
         children: [
           SizedBox(
             height: MediaQuery.of(context).size.height * (1 / 3),
-            child: Container(
-              color: Colors.green,
-              child: const Center(child: Text('Mapa')),
+            child: GoogleMap(
+              zoomControlsEnabled: false,
+              markers: markers,
+              initialCameraPosition: kGooglePlex,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+
+                markers.clear();
+
+                markers.add(Marker(
+                    markerId: const MarkerId('Localização Atual'),
+                    position: LatLng(widget.latitude!, widget.longitude!)));
+
+                setState(() {});
+              },
             ),
           ),
           Padding(
