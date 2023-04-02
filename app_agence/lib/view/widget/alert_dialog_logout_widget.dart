@@ -1,4 +1,5 @@
 import 'package:app_agence/view/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AlertDialogLogoutWidget extends StatelessWidget {
@@ -34,7 +35,8 @@ class AlertDialogLogoutWidget extends StatelessWidget {
                 child: const Text(
                   'CONFIRMAR',
                 ),
-                onTap: () {
+                onTap: () async {
+                  FirebaseAuth.instance.signOut();
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => const Login(),

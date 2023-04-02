@@ -11,10 +11,13 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final snackBar = const SnackBar(
+      content: Text(
+          'Serviço indisponível no momento. Faça Login com a sua conta do Google ou Facebook!'));
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
+    return Scaffold(
+      body: Container(
         color: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -45,13 +48,23 @@ class _LoginState extends State<Login> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        child: const Text('Esqueci minha senha'),
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) => const Home(),
-                          ),
-                          (Route<dynamic> route) => false);
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     },
                     child: const Text('Entrar'),
                   ),
@@ -73,7 +86,7 @@ class _LoginState extends State<Login> {
                         var result = await signInWithGoogle();
 
                         if (result.user != null) {
-                          if (context.mounted) return;
+                          if (!mounted) return;
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                 builder: (context) => const Home(),

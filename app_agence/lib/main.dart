@@ -1,7 +1,16 @@
 import 'package:app_agence/view/login.dart';
+import 'package:app_agence/viewmodel/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(const AppAgence());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  FirebaseApp app = await Firebase.initializeApp(
+    name: 'teste-flutter-agence',
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const AppAgence());
+}
 
 class AppAgence extends StatelessWidget {
   const AppAgence({super.key});
