@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  FirebaseApp app = await Firebase.initializeApp(
+  await Firebase.initializeApp(
     name: 'teste-flutter-agence',
     options: DefaultFirebaseOptions.currentPlatform,
   );

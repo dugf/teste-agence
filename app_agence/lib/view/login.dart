@@ -1,6 +1,7 @@
 import 'package:app_agence/view/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class Login extends StatefulWidget {
@@ -76,7 +77,21 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        var result = await signInWithFacebook();
+
+                        if (result!.user != null) {
+                          if (!mounted) return;
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (context) => const Home(),
+                              ),
+                              (Route<dynamic> route) => false);
+                        } else {
+                          const SnackBar(
+                              content: Text('Erro ao logar com Facebook!'));
+                        }
+                      },
                       child: const Text('Login com Facebook')),
                 ),
                 Padding(
@@ -123,5 +138,17 @@ class _LoginState extends State<Login> {
 
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  Future<UserCredential?> signInWithFacebook() async {
+    // Trigger the sign-in flow
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+
+    // Create a credential from the access token
+    final OAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+    // Once signed in, return the UserCredential
+    return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
   }
 }

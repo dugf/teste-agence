@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:app_agence/view/product_details.dart';
+import 'package:app_agence/view/widget/alert_dialog_permission_widget.dart';
 import 'package:app_agence/view/widget/drawer_widget.dart';
 import 'package:app_agence/viewmodel/product_data_model.dart';
 import 'package:flutter/material.dart';
@@ -93,6 +94,10 @@ class _HomeState extends State<Home> {
   }
 
   Future<List<ProductDataModel>> readJsonData() async {
+    //time data return
+    await Future.delayed(
+      const Duration(seconds: 3),
+    );
     //read json file
     final jsondata = await rootBundle.loadString('assets/sample.json');
     //decode json data as list
@@ -109,6 +114,7 @@ class _HomeState extends State<Home> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
     if (!serviceEnabled) {
+      Geolocator.openLocationSettings();
       return Future.error('Location services are disabled');
     }
 
@@ -123,11 +129,21 @@ class _HomeState extends State<Home> {
     }
 
     if (permission == LocationPermission.deniedForever) {
+      showDialogPermission();
       return Future.error('Location permission are permanently denied');
     }
 
     Position position = await Geolocator.getCurrentPosition();
 
     return position;
+  }
+
+  showDialogPermission() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialogPermissionWidget();
+      },
+    );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:app_agence/view/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class AlertDialogLogoutWidget extends StatelessWidget {
   const AlertDialogLogoutWidget({Key? key}) : super(key: key);
@@ -35,8 +36,9 @@ class AlertDialogLogoutWidget extends StatelessWidget {
                 child: const Text(
                   'CONFIRMAR',
                 ),
-                onTap: () async {
+                onTap: () {
                   FirebaseAuth.instance.signOut();
+                  FacebookAuth.instance.logOut();
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => const Login(),

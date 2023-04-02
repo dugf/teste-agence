@@ -12,7 +12,7 @@ class AlertDialogBuyWidget extends StatelessWidget {
         'CONFIRMAR A COMPRA?',
       ),
       content: const Text(
-        'Se deseja realmente efetuar a comprar clique CONFIRMAR. \nCaso contrário, clique em CANCELAR.',
+        'Se deseja realmente efetuar a compra clique em CONFIRMAR. \nCaso contrário, clique em CANCELAR.',
         textAlign: TextAlign.justify,
       ),
       actions: <Widget>[
