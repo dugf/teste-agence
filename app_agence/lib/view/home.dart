@@ -1,11 +1,11 @@
-import 'dart:convert';
+import 'package:app_agence/controller/app_controller.dart';
+import 'package:app_agence/model/product_data_model.dart';
 import 'package:app_agence/view/product_details.dart';
 import 'package:app_agence/view/widget/alert_dialog_permission_widget.dart';
 import 'package:app_agence/view/widget/drawer_widget.dart';
-import 'package:app_agence/viewmodel/product_data_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -15,6 +15,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final AppController appController = Get.put(AppController());
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -30,7 +32,7 @@ class _HomeState extends State<Home> {
         ),
         drawer: const DrawerWidget(),
         body: FutureBuilder(
-            future: readJsonData(),
+            future: appController.readJsonData(),
             builder: (context, data) {
               if (data.hasError) {
                 return Center(child: Text("${data.error}"));
@@ -78,7 +80,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       onTap: () async {
-                        Position position = await _determinePosition();
+                        Position position = await determinePosition();
 
                         if (!mounted) return;
                         Navigator.push(
@@ -108,21 +110,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Future<List<ProductDataModel>> readJsonData() async {
-    //time data return
-    await Future.delayed(
-      const Duration(seconds: 3),
-    );
-    //read json file
-    final jsondata = await rootBundle.loadString('assets/sample.json');
-    //decode json data as list
-    final list = json.decode(jsondata) as List<dynamic>;
-
-    //map json and initialize using DataModel
-    return list.map((e) => ProductDataModel.fromJson(e)).toList();
-  }
-
-  Future<Position> _determinePosition() async {
+  Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
 
