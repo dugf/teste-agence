@@ -1,0 +1,39 @@
+{
+    "project_info": {
+        "project_number": "406992445296",
+        "project_id": "teste-flutter-agence",
+        "storage_bucket": "teste-flutter-agence.appspot.com"
+    },
+    "client": [
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:406992445296:android:bfc108790b11ff766df9b5",
+                "android_client_info": {
+                    "package_name": "com.agence.app_agence"
+                }
+            },
+            "oauth_client": [
+                {
+                    "client_id": "406992445296-p2uri074v6ci00tcjmfdko3jotegk2sk.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyBVtzqFwcGMeCu7k4jhov985O4t_uwC22c"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "406992445296-p2uri074v6ci00tcjmfdko3jotegk2sk.apps.googleusercontent.com",
+                            "client_type": 3
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "configuration_version": "1"
+}
