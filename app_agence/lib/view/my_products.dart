@@ -6,8 +6,16 @@ class MyProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.indigo[900],
       appBar: AppBar(
-        title: const Text('Meus produtos'),
+        backgroundColor: Colors.grey,
+        title: const Text(
+          'Meus produtos',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+          ),
+        ),
         centerTitle: true,
       ),
       body: Container(),

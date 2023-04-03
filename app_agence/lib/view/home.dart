@@ -17,79 +17,94 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Produtos'),
-        centerTitle: true,
-      ),
-      drawer: const DrawerWidget(),
-      body: FutureBuilder(
-          future: readJsonData(),
-          builder: (context, data) {
-            if (data.hasError) {
-              return Center(child: Text("${data.error}"));
-            } else if (data.hasData) {
-              var items = data.data as List<ProductDataModel>;
-              return GridView.builder(
-                padding: const EdgeInsets.all(10.0),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0),
-                itemCount: items.isEmpty ? 0 : items.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: Image(
-                            image:
-                                NetworkImage(items[index].imageURL.toString()),
-                            fit: BoxFit.fill,
-                          ),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.indigo[900],
+        appBar: AppBar(
+          title: const Text(
+            'Produtos',
+            style: TextStyle(color: Colors.white, fontSize: 24),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.grey,
+        ),
+        drawer: const DrawerWidget(),
+        body: FutureBuilder(
+            future: readJsonData(),
+            builder: (context, data) {
+              if (data.hasError) {
+                return Center(child: Text("${data.error}"));
+              } else if (data.hasData) {
+                var items = data.data as List<ProductDataModel>;
+                return GridView.builder(
+                  padding: const EdgeInsets.all(10.0),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10.0,
+                      mainAxisSpacing: 10.0),
+                  itemCount: items.isEmpty ? 0 : items.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      child: Container(
+                        color: Colors.white,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                width: 200,
+                                height: 200,
+                                child: Image(
+                                  image: NetworkImage(
+                                      items[index].imageURL.toString()),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 8, left: 8, right: 8),
+                              child: Text(
+                                items[index].name.toString(),
+                                style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(top: 8, left: 8, right: 8),
-                          child: Text(
-                            items[index].name.toString(),
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    ),
-                    onTap: () async {
-                      Position position = await _determinePosition();
+                      ),
+                      onTap: () async {
+                        Position position = await _determinePosition();
 
-                      if (!mounted) return;
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductDetails(
-                            title: items[index].name.toString(),
-                            description: items[index].price.toString(),
-                            image: items[index].imageURL.toString(),
-                            latitude: position.latitude,
-                            longitude: position.longitude,
+                        if (!mounted) return;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductDetails(
+                              title: items[index].name.toString(),
+                              price: items[index].price.toString(),
+                              description: items[index].description.toString(),
+                              image: items[index].imageURL.toString(),
+                              latitude: position.latitude,
+                              longitude: position.longitude,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          }),
+                        );
+                      },
+                    );
+                  },
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(color: Colors.white),
+                );
+              }
+            }),
+      ),
     );
   }
 

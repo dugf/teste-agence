@@ -13,14 +13,23 @@ class DrawerWidget extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
+          Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.close),
+              ),
             ),
-            child: Text('BEM VINDOS'),
           ),
           ListTile(
-            title: const Text('Perfil'),
+            title: Text(
+              'Perfil',
+              style: TextStyle(color: Colors.indigo[900], fontSize: 24),
+            ),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -29,8 +38,10 @@ class DrawerWidget extends StatelessWidget {
               );
             },
           ),
+          const Divider(),
           ListTile(
-            title: const Text('Meus Produtos'),
+            title: Text('Meus Produtos',
+                style: TextStyle(color: Colors.indigo[900], fontSize: 24)),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -39,8 +50,10 @@ class DrawerWidget extends StatelessWidget {
               );
             },
           ),
+          const Divider(),
           ListTile(
-            title: const Text('Configurações'),
+            title: Text('Configurações',
+                style: TextStyle(color: Colors.indigo[900], fontSize: 24)),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -49,8 +62,10 @@ class DrawerWidget extends StatelessWidget {
               );
             },
           ),
+          const Divider(),
           ListTile(
-            title: const Text('Logout'),
+            title: Text('Logout',
+                style: TextStyle(color: Colors.indigo[900], fontSize: 24)),
             onTap: () {
               showDialog<void>(
                 context: context,

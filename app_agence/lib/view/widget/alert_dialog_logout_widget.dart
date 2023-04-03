@@ -26,15 +26,23 @@ class AlertDialogLogoutWidget extends StatelessWidget {
               GestureDetector(
                 child: const Text(
                   'CANCELAR',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18),
                 ),
                 onTap: () {
                   Navigator.pop(context);
                 },
               ),
-              const SizedBox(width: 40),
+              const SizedBox(width: 30),
               GestureDetector(
                 child: const Text(
                   'CONFIRMAR',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18),
                 ),
                 onTap: () {
                   FirebaseAuth.instance.signOut();

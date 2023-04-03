@@ -6,8 +6,16 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.indigo[900],
       appBar: AppBar(
-        title: const Text('Perfil'),
+        backgroundColor: Colors.grey,
+        title: const Text(
+          'Perfil',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+          ),
+        ),
         centerTitle: true,
       ),
       body: Container(),

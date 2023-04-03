@@ -6,8 +6,16 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.indigo[900],
       appBar: AppBar(
-        title: const Text('Configurações'),
+        backgroundColor: Colors.grey,
+        title: const Text(
+          'Configurações',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+          ),
+        ),
         centerTitle: true,
       ),
       body: Container(),

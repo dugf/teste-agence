@@ -17,106 +17,166 @@ class _LoginState extends State<Login> {
           'Serviço indisponível no momento. Faça Login com a sua conta do Google ou Facebook!'));
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Login',
-                style: TextStyle(color: Colors.black, fontSize: 28),
-              ),
-            ),
-            Column(
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Container(
+          color: Colors.indigo[900],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: TextFormField(
-                    decoration: const InputDecoration(hintText: 'e-mail'),
-                  ),
+                Image.asset(
+                  'assets/images/agence.png',
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: TextFormField(
-                    decoration: const InputDecoration(hintText: 'senha'),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        child: const Text('Esqueci minha senha'),
+                Column(
+                  children: [
+                    TextFormField(
+                      cursorColor: Colors.white,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        labelText: 'E-mail',
+                        labelStyle: TextStyle(color: Colors.white),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      cursorColor: Colors.white,
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: const InputDecoration(
+                        labelText: 'Senha',
+                        labelStyle: TextStyle(color: Colors.white),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            child: const Text(
+                              'Esqueci minha senha',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            onPressed: () {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 60,
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         },
-                      )
-                    ],
-                  ),
+                        child: const Text(
+                          'Entrar',
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    },
-                    child: const Text('Entrar'),
-                  ),
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 60,
+                        width: MediaQuery.of(context).size.width,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            backgroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                          onPressed: () async {
+                            var result = await signInWithFacebook();
+
+                            if (result.user != null) {
+                              if (!mounted) return;
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                    builder: (context) => const Home(),
+                                  ),
+                                  (Route<dynamic> route) => false);
+                            } else {
+                              const SnackBar(
+                                  content: Text('Erro ao logar com Facebook!'));
+                            }
+                          },
+                          child: Text(
+                            'Login com Facebook',
+                            style: TextStyle(color: Colors.indigo[900]),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 60,
+                        width: MediaQuery.of(context).size.width,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            backgroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                          onPressed: () async {
+                            var result = await signInWithGoogle();
+
+                            if (result.user != null) {
+                              if (!mounted) return;
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                    builder: (context) => const Home(),
+                                  ),
+                                  (Route<dynamic> route) => false);
+                            } else {
+                              const SnackBar(
+                                  content: Text('Erro ao logar com Google!'));
+                            }
+                          },
+                          child: Text('Login com Google',
+                              style: TextStyle(color: Colors.yellow[900])),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                      onPressed: () async {
-                        var result = await signInWithFacebook();
-
-                        if (result!.user != null) {
-                          if (!mounted) return;
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                builder: (context) => const Home(),
-                              ),
-                              (Route<dynamic> route) => false);
-                        } else {
-                          const SnackBar(
-                              content: Text('Erro ao logar com Facebook!'));
-                        }
-                      },
-                      child: const Text('Login com Facebook')),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                      onPressed: () async {
-                        var result = await signInWithGoogle();
-
-                        if (result.user != null) {
-                          if (!mounted) return;
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                builder: (context) => const Home(),
-                              ),
-                              (Route<dynamic> route) => false);
-                        } else {
-                          const SnackBar(
-                              content: Text('Erro ao logar com Google!'));
-                        }
-                      },
-                      child: const Text('Login com Google')),
-                ),
-              ],
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -140,13 +200,13 @@ class _LoginState extends State<Login> {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  Future<UserCredential?> signInWithFacebook() async {
+  Future<UserCredential> signInWithFacebook() async {
     // Trigger the sign-in flow
     final LoginResult loginResult = await FacebookAuth.instance.login();
 
     // Create a credential from the access token
     final OAuthCredential facebookAuthCredential =
-        FacebookAuthProvider.credential(loginResult.accessToken!.token);
+        FacebookAuthProvider.credential(loginResult.accessToken?.token ?? '');
 
     // Once signed in, return the UserCredential
     return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);

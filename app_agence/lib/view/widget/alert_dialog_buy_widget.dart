@@ -12,7 +12,7 @@ class AlertDialogBuyWidget extends StatelessWidget {
         'CONFIRMAR A COMPRA?',
       ),
       content: const Text(
-        'Se deseja realmente efetuar a compra clique em CONFIRMAR. \nCaso contrário, clique em CANCELAR.',
+        'Se você deseja realmente efetuar a compra clique em CONFIRMAR. \nCaso contrário, clique em CANCELAR.',
         textAlign: TextAlign.justify,
       ),
       actions: <Widget>[
@@ -22,17 +22,24 @@ class AlertDialogBuyWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               GestureDetector(
-                child: const Text(
-                  'CANCELAR',
-                ),
+                child: const Text('CANCELAR',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    )),
                 onTap: () {
                   Navigator.pop(context);
                 },
               ),
-              const SizedBox(width: 40),
+              const SizedBox(width: 30),
               GestureDetector(
                   child: const Text(
                     'CONFIRMAR',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18),
                   ),
                   onTap: () {
                     ScaffoldMessenger.of(context).clearSnackBars();

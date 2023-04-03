@@ -19,7 +19,7 @@ class AppAgence extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Teste Agence',
+      title: 'Agence Teste',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

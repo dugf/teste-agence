@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ProductDetails extends StatefulWidget {
   final String? title;
+  final String? price;
   final String? description;
   final String? image;
   final double? latitude;
@@ -16,7 +17,8 @@ class ProductDetails extends StatefulWidget {
       this.description,
       this.latitude,
       this.longitude,
-      this.image})
+      this.image,
+      this.price})
       : super(key: key);
 
   @override
@@ -38,8 +40,13 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
 
     return Scaffold(
+      backgroundColor: Colors.indigo[900],
       appBar: AppBar(
-        title: const Text('Detalhes do Produto'),
+        backgroundColor: Colors.grey,
+        title: const Text(
+          'Detalhes do Produto',
+          style: TextStyle(color: Colors.white, fontSize: 24),
+        ),
         centerTitle: true,
       ),
       body: Column(
@@ -80,32 +87,66 @@ class _ProductDetailsState extends State<ProductDetails> {
                 const SizedBox(
                   width: 20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('${widget.title}'),
-                      const SizedBox(
-                        height: 20,
+                Flexible(
+                  child: FittedBox(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${widget.title}',
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 20),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            'R\$ ${widget.price}',
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 20),
+                          ),
+                          Text(
+                            '${widget.description}',
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 20),
+                          )
+                        ],
                       ),
-                      Text('R\$ ${widget.description}')
-                    ],
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              showDialog<void>(
-                context: context,
-                builder: (BuildContext context) {
-                  return const AlertDialogBuyWidget();
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            child: SizedBox(
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                ),
+                onPressed: () {
+                  showDialog<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const AlertDialogBuyWidget();
+                    },
+                  );
                 },
-              );
-            },
-            child: const Text('Realizar Comprar'),
+                child: const Text(
+                  'Realizar Comprar',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ),
           ),
           const SizedBox(
             height: 20,
